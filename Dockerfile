@@ -1,18 +1,16 @@
-# Using official python runtime base image
-FROM python:2.7-alpine
+FROM node:5.11.0-slim
 
-# Set the application directory
 WORKDIR /app
 
-# Install our requirements.txt
-ADD requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+RUN npm install -g nodemon
+ADD package.json /app/package.json
+RUN npm config set registry http://registry.npmjs.org
+RUN npm install && npm ls
+RUN mv /app/node_modules /node_modules
 
-# Copy our code from the current folder to /app inside the container
 ADD . /app
 
-# Make port 80 available for links and/or publish
+ENV PORT 80
 EXPOSE 80
 
-# Define our command to be run when launching the container
-CMD ["gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
+CMD ["node", "server.js"]
