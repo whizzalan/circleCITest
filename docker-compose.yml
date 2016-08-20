@@ -12,13 +12,13 @@ services:
     ports: ["6379"]
 
   worker:
-    image: whizzalan/votingapp_worker
+    image: philipz/votingapp_worker
 
   db:
     image: postgres:9.4
 
   result:
-    image: whizzalan/votingapp_result
+    image: philipz/votingapp_result
     ports:
       - "80:80"
       - "5858:5858"
